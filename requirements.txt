@@ -1,6 +1,0 @@
-flask
-transformers
-torch
-nltk
-spacy
-sqlite3-bro

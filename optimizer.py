@@ -2,9 +2,9 @@ from transformers import pipeline
 import torch
 import re
 
-# 🧠 Load facebook/bart-large (optimized usage)
+# Load facebook/bart-large (optimized usage)
 def load_generator():
-    print("🔹 Loading facebook/bart-large (optimized mode)...")
+    print(" Loading facebook/bart-large (optimized mode)...")
     return pipeline(
         "text2text-generation",
         model="facebook/bart-large",
@@ -26,12 +26,12 @@ def optimize_prompt(user_prompt):
     if not user_prompt:
         return "Please enter a valid prompt."
 
-    # 🧩 Remove excessive repetition
+    #Remove excessive repetition
     words = user_prompt.split()
     if len(set(words)) < len(words) / 2:
         user_prompt = " ".join(sorted(set(words), key=words.index))
 
-    # ⚙️ Instruction pattern that works best for non-instruction models like BART
+    # Instruction pattern that works best for non-instruction models like BART
     instruction = (
         f"Input: {user_prompt}\n\n"
         
@@ -49,10 +49,10 @@ def optimize_prompt(user_prompt):
 
         optimized = result[0]['generated_text'].strip()
 
-        # 🧠 Clean up any leftover tokens or repeated context
+        #Clean up any leftover tokens or repeated context
         optimized = optimized.replace("Input:", "").replace("Output:", "").strip()
 
-        # ✨ If model just copied the input, add small fallback rewording
+        #If model just copied the input, add small fallback rewording
         if optimized.lower() == user_prompt.lower() or len(optimized.split()) < 4:
             optimized = f"A clear and detailed rewrite of your prompt: {user_prompt}"
 
